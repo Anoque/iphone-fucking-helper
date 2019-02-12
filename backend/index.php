@@ -1,6 +1,7 @@
 <?php
 
 require "core/Functions.php";
+require "core/Connection.php";
 require "core/Controller.php";
 require "core/Struct.php";
 
