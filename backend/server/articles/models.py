@@ -6,7 +6,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     date = models.DateTimeField('date published')
 
-    def to_json(self):
+    def to_object(self):
 	return {
 	    "id": self.id,
 	    "title": self.title,

@@ -8,12 +8,14 @@ def index(request):
     response_data = Article.objects.all()
 
     if (len(response_data) == 0):
-	return HttpResponse("no data")
+	return HttpResponse('{"error":"No data"}')
     else:
-	data = []
+	data = {}
+	data['data'] = []
+	data['error'] = ''
 
 	for a in response_data:
-	    data.append(a.to_json())
+	    data['data'].append(a.to_object())
 	
         return HttpResponse(json.dumps(data), content_type = 'json')
 
