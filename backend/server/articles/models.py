@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class Article(models.Model):
@@ -7,11 +8,12 @@ class Article(models.Model):
     date = models.DateTimeField('date published')
 
     def to_object(self):
-	return {
-	    "id": self.id,
-	    "title": self.title,
-	    "date": self.date.strftime("%Y-%m-%d %H:%M:%S")
-	}
+        return {
+            "id": self.id,
+            "title": self.title,
+            "date": self.date.strftime("%Y-%m-%d %H:%M:%S")
+        }
+
 
 class ArticleRelation(models.Model):
     parent = models.IntegerField()
