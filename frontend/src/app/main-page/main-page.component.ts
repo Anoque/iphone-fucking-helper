@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NetService } from '../shared/net/net.service';
-import { Article } from '../../main';
+import {NetService} from '../shared/net/net.service';
+
+export class Article {
+  id: number;
+  title: string;
+  date: string;
+}
+
 
 @Component({
   selector: 'app-main-page',
@@ -20,6 +26,14 @@ export class MainPageComponent implements OnInit {
         this.articles = res;
       }
     });
+  }
+
+  addArticle() {
+    const temp = new Article();
+    temp.id = this.articles.length + 1;
+    temp.title = 'Added';
+    temp.date = new Date().toDateString();
+    this.articles.push(temp);
   }
 
 }

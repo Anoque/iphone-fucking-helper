@@ -4,9 +4,10 @@ import { NetService } from './net/net.service';
 
 @NgModule({
   imports: [
-    CommonModule,
-    NetService
+    CommonModule
   ],
-  declarations: []
+  providers: [
+    NetService
+  ]
 })
 export class SharedModule { }
