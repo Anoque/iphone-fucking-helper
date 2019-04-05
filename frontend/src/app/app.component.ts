@@ -1,11 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {NetService, ResponseData} from './shared/net/net.service';
-
-export class Article {
-  id: number;
-  title: string;
-  date: string;
-}
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -13,18 +6,8 @@ export class Article {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'app';
-  articles: Article[];
 
-  constructor(private netService: NetService) {
-    this.articles = [];
-  }
+  constructor() { }
 
-  ngOnInit(): void {
-    this.netService.getRequest('articles/').subscribe((res: any) => {
-      if (res) {
-        this.articles = res;
-      }
-    });
-  }
+  ngOnInit(): void { }
 }

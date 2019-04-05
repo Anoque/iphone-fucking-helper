@@ -10,3 +10,9 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));
+
+export class Article {
+  id: number;
+  title: string;
+  date: string;
+}
