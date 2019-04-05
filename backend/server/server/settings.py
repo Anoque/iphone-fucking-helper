@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'iphone-app',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'qwerty',
         'HOST': 'localhost',
         'PORT': '3306',
     }
