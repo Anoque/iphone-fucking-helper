@@ -8,12 +8,16 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { MaterialModule } from './shared/material/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ArticlesModule } from './articles/articles.module';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { ErrorStateMatcher, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDirtyErrorStateMatcher } from '@angular/material';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainPageComponent
+    MainPageComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +26,12 @@ import { ArticlesModule } from './articles/articles.module';
     HttpClientModule,
     SharedModule,
     MaterialModule,
+    ReactiveFormsModule,
     ArticlesModule
+  ],
+  providers: [
+    {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},
+    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
   ],
   bootstrap: [AppComponent]
 })

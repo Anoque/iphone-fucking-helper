@@ -1,0 +1,28 @@
+<div id="login-form">
+  <article>
+    <mat-card>
+        <h2>Auth form</h2>
+        <form [formGroup]="formItems" (ngSubmit)="onSubmit()">
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              id="login"
+              placeholder="Login"
+              [formControlName]="'login'">
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              type="password"
+              id="password"
+              placeholder="Password"
+              [formControlName]="'password'">
+          </mat-form-field>
+          <div id="login-form-buttons">
+            <button type="submit" mat-raised-button color="primary">Enter</button>
+          </div>
+        </form>
+    </mat-card>
+  </article>
+</div>
