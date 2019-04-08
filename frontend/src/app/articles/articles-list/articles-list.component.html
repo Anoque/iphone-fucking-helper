@@ -1,0 +1,9 @@
+<mat-list>
+  <ng-container *ngFor="let article of articles">
+    <mat-card>
+      <h2>{{ article.id }}. {{ article.title }}</h2>
+      <div>{{ article.date | date:'dd.MM.yyyy' }}</div>
+    </mat-card>
+    <mat-divider></mat-divider>
+  </ng-container>
+</mat-list>

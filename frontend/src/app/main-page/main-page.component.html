@@ -1,10 +1,9 @@
-<button mat-button (click)="addArticle()">Add</button>
-<mat-list>
-  <ng-container *ngFor="let article of articles">
-      <mat-card>
-        <h2>{{ article.id }}. {{ article.title }}</h2>
-        <div>{{ article.date | date:'dd.MM.yyyy' }}</div>
-      </mat-card>
-    <mat-divider></mat-divider>
-  </ng-container>
-</mat-list>
+<h2>Iphone f*cking helper</h2>
+<mat-nav-list>
+  <mat-list-item>
+    <button mat-button [routerLink]="'/articles'">Articles list</button>
+  </mat-list-item>
+  <mat-list-item>
+    <button mat-button [routerLink]="'/articles/add'">Articles add</button>
+  </mat-list-item>
+</mat-nav-list>
