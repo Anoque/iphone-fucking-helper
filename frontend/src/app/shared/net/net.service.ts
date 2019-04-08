@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
 
@@ -16,15 +16,26 @@ export class NetService {
 
   constructor(private http: HttpClient) { }
 
-  sendRequest(data): Observable<ResponseData> {
-    return this.http.post(environment.backendUrl, JSON.stringify(data)).pipe(map((val: ResponseData) => {
-      if (!val.error) {
-        return val.data;
-      } else {
-        console.log(val.error);
-        return false;
-      }
-    }));
+  sendRequest(url: string, data: any): Observable<any> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    return this.http.post(environment.backendUrl + url, JSON.stringify(data), options).pipe(
+      map((val: any) => {
+        if (!environment.production) {
+          console.log(val);
+        }
+
+        if (val.data && !val.error) {
+          return val.data;
+        }
+
+        return val;
+      })
+    );
   }
 
   getRequest(url: string): Observable<ResponseData> {
@@ -37,7 +48,6 @@ export class NetService {
         return val.data;
       } else {
         console.log(val.error);
-        // Will be message about error
 
         return false;
       }

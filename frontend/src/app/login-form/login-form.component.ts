@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NetService } from '../shared/net/net.service';
 
 @Component({
   selector: 'app-login-form',
@@ -8,8 +9,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginFormComponent implements OnInit {
   formItems: FormGroup;
+  showErrors: boolean;
+  showInvalidMessage: boolean;
 
-  constructor(private elementRef: ElementRef, private fb: FormBuilder) { }
+  constructor(private elementRef: ElementRef, private fb: FormBuilder, private netService: NetService) {
+    this.showInvalidMessage = false;
+    this.showErrors = false;
+  }
 
   ngOnInit() {
     this.initForm();
@@ -36,11 +42,24 @@ export class LoginFormComponent implements OnInit {
   onSubmit() {
     console.log(this.formItems.controls);
     if (!this.formItems.invalid) {
-      console.log('Nice');
+      this.showErrors = true;
       const data = {
-        'login': this.formItems.controls['login'],
-        'password': this.formItems.controls['password']
+        'username': this.formItems.controls['login'].value,
+        'password': this.formItems.controls['password'].value
       };
+
+      this.netService.sendRequest('api-token-auth/', data).subscribe(
+        res => {
+            if (res['token']) {
+              console.log(res.token);
+              this.showInvalidMessage = false;
+            }
+          },
+        err => {
+          console.log(err.error.non_field_errors);
+          this.showInvalidMessage = true;
+        }
+      );
     } else {
       console.log('Invalid data');
     }

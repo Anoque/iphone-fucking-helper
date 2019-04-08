@@ -19,6 +19,11 @@
               placeholder="Password"
               [formControlName]="'password'">
           </mat-form-field>
+          <section id="login-form-errors" *ngIf="showErrors">
+            <mat-toolbar class="error-item" color="warn" *ngIf="showInvalidMessage">
+              <span>User not found with current login and password</span>
+            </mat-toolbar>
+          </section>
           <div id="login-form-buttons">
             <button type="submit" mat-raised-button color="primary">Enter</button>
           </div>
