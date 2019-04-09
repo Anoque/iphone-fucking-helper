@@ -19,7 +19,7 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#656565';
+    // this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#656565';
   }
 
   initForm(): void {
