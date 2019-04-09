@@ -1,0 +1,25 @@
+#article-form {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #656565;
+}
+
+#article-form form {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  font-size: 1.4em;
+  min-width: 400px;
+}
+
+#article-form h2 {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  font-size: 2em;
+  padding: 10px 0 20px;
+}
