@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
 from .models import Article
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     response_data = Article.objects.all()
@@ -16,14 +17,19 @@ def index(request):
             data['data'].append(a.to_object())
         return HttpResponse(json.dumps(data), content_type = 'json')
 
+@csrf_exempt
 def add(request):
-    if (request.method == "GET"):
-        return HttpResponse('{"test":"1234"}')
-    elif (request.method == "POST"):
-        article = Article()
-        article.title = request.POST.get("title")
-        article.date = request.POST.get("date")
-        article.save()
-        return HttpResponse("Ok")
+    if request.method == "POST":
+        data = json.loads(request.body)
+
+        if data['title'] != None and len(data['title']) > 0 and data['date'] != None and len(data['date']):
+            article = Article()
+            article.title = data["title"]
+            article.date = data["date"]
+            article.save()
+
+            return HttpResponse('{"status": true}')
+        else:
+            return HttpResponse('{"error": "No parameters"}')
     else:
-        return HttpResponse("No method")
+        return HttpResponse('{"error": "No method"}')
