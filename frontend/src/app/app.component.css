@@ -1,0 +1,22 @@
+#header-menu-container {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 64px;
+  background: #666;
+}
+
+ul {
+  display: flex;
+  width: 100%;
+}
+
+ul li:not(:last-child) {
+  margin-right: 10px;
+}
+
+#content {
+  padding-top: 64px;
+}

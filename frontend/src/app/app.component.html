@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<article id="header-menu-container">
+  <mat-toolbar color="primary" id="header-menu">
+    <nav>
+      <ul>
+        <li><a routerLink="/articles" mat-raised-button>Articles list</a></li>
+        <li><a routerLink="/articles/add" mat-raised-button>Add article</a></li>
+        <li><a routerLink="/auth" mat-raised-button>Auth</a></li>
+      </ul>
+    </nav>
+  </mat-toolbar>
+</article>
+<div id="content">
+  <router-outlet></router-outlet>
+</div>
