@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NetService } from '../shared/net/net.service';
+import {ActivatedRoute, Route, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -12,7 +13,8 @@ export class LoginFormComponent implements OnInit {
   showErrors: boolean;
   showInvalidMessage: boolean;
 
-  constructor(private elementRef: ElementRef, private fb: FormBuilder, private netService: NetService) {
+  constructor(private elementRef: ElementRef, private fb: FormBuilder, private netService: NetService,
+              private router: Router) {
     this.showInvalidMessage = false;
     this.showErrors = false;
   }
@@ -52,7 +54,9 @@ export class LoginFormComponent implements OnInit {
         res => {
             if (res['token']) {
               console.log(res.token);
+              this.netService.setToken(res.token);
               this.showInvalidMessage = false;
+              setTimeout(() => this.router.navigate(['/articles']), 1000);
             }
           },
         err => {
