@@ -3,7 +3,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
 from .models import Article
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 def index(request):
     response_data = Article.objects.all()
@@ -17,8 +18,9 @@ def index(request):
             data['data'].append(a.to_object())
         return HttpResponse(json.dumps(data), content_type = 'json')
 
-@csrf_exempt
-def add(request):
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def add(request, format=None):
     if request.method == "POST":
         data = json.loads(request.body)
 
@@ -34,8 +36,9 @@ def add(request):
     else:
         return HttpResponse('{"error": "No method"}')
 
-@csrf_exempt
-def delete(request):
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def delete(request, format=None):
     if request.method == "POST":
         data = json.loads(request.body)
         print(request.body)

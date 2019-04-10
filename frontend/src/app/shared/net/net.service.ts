@@ -20,14 +20,20 @@ export class NetService {
   }
 
   sendRequest(url: string, data: any): Observable<any> {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-
+    let options;
     if (this.getToken().length > 0) {
-      data['token'] = this.getToken();
+      options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + this.getToken()
+        })
+      };
+    } else {
+      options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
     }
 
     return this.http.post(environment.backendUrl + url, JSON.stringify(data), options).pipe(
