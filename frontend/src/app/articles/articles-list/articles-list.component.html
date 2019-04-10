@@ -1,5 +1,5 @@
 <mat-list id="articles-list">
-  <ng-container *ngFor="let article of articles">
+  <ng-container *ngFor="let article of articles; let i = index;">
     <mat-card class="article-card">
       <mat-card-header>
         <h2>{{ article.id }}. {{ article.title }}</h2>
@@ -9,8 +9,9 @@
       </mat-card-content>
       <mat-card-actions [align]="'end'">
         <button mat-raised-button color="primary">Edit</button>
-        <button mat-raised-button color="warn">Remove</button>
+        <button mat-raised-button color="warn" (click)="remove(i)">Remove</button>
       </mat-card-actions>
     </mat-card>
   </ng-container>
+  <app-error-message [error]="error" *ngIf="error.length > 0"></app-error-message>
 </mat-list>
