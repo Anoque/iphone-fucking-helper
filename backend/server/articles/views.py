@@ -33,3 +33,18 @@ def add(request):
             return HttpResponse('{"error": "No parameters"}')
     else:
         return HttpResponse('{"error": "No method"}')
+
+@csrf_exempt
+def delete(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        print(request.body)
+        print(data['id'])
+        if data['id'] != None:
+            article = Article.objects.get(id=int(data['id']))
+            article.delete()
+            return HttpResponse('{"status": true}')
+        else:
+            return HttpResponse('{"error": "No id"}')
+    else:
+        return HttpResponse('{"error": "No method"}')
