@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NetService } from './net/net.service';
+import { ErrorMessageComponent } from './error-message/error-message.component';
 import { MaterialModule } from './material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,8 +15,10 @@ import { ErrorStateMatcher, MAT_DATE_LOCALE, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDir
     MaterialModule,
   ],
   declarations: [
+    ErrorMessageComponent
   ],
   exports: [
+    ErrorMessageComponent,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
