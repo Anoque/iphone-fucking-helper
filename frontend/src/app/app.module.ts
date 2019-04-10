@@ -5,13 +5,9 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { MainPageComponent } from './main-page/main-page.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
-import { MaterialModule } from './shared/material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ArticlesModule } from './articles/articles.module';
 import { LoginFormComponent } from './login-form/login-form.component';
-import {ErrorStateMatcher, MAT_DATE_LOCALE, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDirtyErrorStateMatcher} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -22,17 +18,9 @@ import {ErrorStateMatcher, MAT_DATE_LOCALE, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDirt
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
     HttpClientModule,
     SharedModule,
-    MaterialModule,
-    ReactiveFormsModule,
     ArticlesModule
-  ],
-  providers: [
-    {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
-    {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
   ],
   bootstrap: [AppComponent]
 })
