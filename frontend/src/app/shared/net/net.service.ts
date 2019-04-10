@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { map } from 'rxjs/operators';
 
-export class ResponseData {
+export interface ResponseData {
   data: any;
   error: string;
 }
@@ -13,8 +13,11 @@ export class ResponseData {
   providedIn: 'root'
 })
 export class NetService {
+  private token: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.setToken('');
+  }
 
   sendRequest(url: string, data: any): Observable<any> {
     const options = {
@@ -22,6 +25,10 @@ export class NetService {
         'Content-Type': 'application/json'
       })
     };
+
+    if (this.getToken().length > 0) {
+      data['token'] = this.getToken();
+    }
 
     return this.http.post(environment.backendUrl + url, JSON.stringify(data), options).pipe(
       map((val: any) => {
@@ -52,5 +59,14 @@ export class NetService {
         return false;
       }
     }));
+  }
+
+
+  getToken(): string {
+    return this.token;
+  }
+
+  setToken(value: string): void {
+    this.token = value;
   }
 }
