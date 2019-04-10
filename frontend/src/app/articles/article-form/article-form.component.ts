@@ -22,10 +22,12 @@ export class ArticleFormComponent implements OnInit {
   formItems: FormGroup;
   colors: string[];
   color: number;
+  error: string;
 
   constructor(private fb: FormBuilder, private netService: NetService) {
     this.colors = ['#656565', '#ff0000', '#00ff00'];
     this.color = 0;
+    this.error = '';
   }
 
   ngOnInit() {
@@ -59,6 +61,12 @@ export class ArticleFormComponent implements OnInit {
           this.color = 2;
         } else {
           this.color = 1;
+        }
+      }, err => {
+        if (err.error.details) {
+          this.error = err.error.details;
+        } else {
+          this.error = err.message;
         }
       });
     } else {

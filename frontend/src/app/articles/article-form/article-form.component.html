@@ -15,6 +15,7 @@
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
+        <app-error-message [error]="error" *ngIf="error.length > 0"></app-error-message>
         <button mat-raised-button type="submit" color="primary">Add article</button>
       </form>
     </mat-card-content>
