@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {NetService} from '../shared/net/net.service';
-import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -9,7 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor(private netService: NetService, private router: Router) { }
+  constructor() { }
 
   ngOnInit(): void { }
 }
