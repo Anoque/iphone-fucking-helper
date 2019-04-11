@@ -40,20 +40,21 @@ export class ArticleFormComponent implements OnInit {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(255),
-        Validators.pattern(/[A-z0-9]/),
+        Validators.pattern(/[A-z0-9А-я]/),
       ]
       ],
-      date: ['', [
-        Validators.required
-      ]]
+      date: ['', []],
+      description: ['', []]
     });
   }
 
   onSubmit() {
+    console.log(this.formItems.invalid);
     if (!this.formItems.invalid) {
       const data = {
         'title': this.formItems.controls['title'].value,
-        'date': DataService.getDateString(this.formItems.controls['date'].value, true)
+        'date': DataService.getDateString(new Date, true),
+        'description': this.formItems.controls['description'].value
       };
 
       this.netService.sendRequest('articles/add/', data).subscribe((res) => {
