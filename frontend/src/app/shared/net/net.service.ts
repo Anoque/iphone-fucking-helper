@@ -19,7 +19,7 @@ export class NetService {
     this.setToken('');
   }
 
-  sendRequest(url: string, data: any): Observable<any> {
+  sendRequest(url: string, data: any, full: boolean = false): Observable<any> {
     let options;
     if (this.getToken().length > 0) {
       options = {
@@ -43,7 +43,7 @@ export class NetService {
         }
 
         if (val.data && !val.error) {
-          return val.data;
+          return (full) ? val : val.data;
         }
 
         return val;
@@ -51,14 +51,14 @@ export class NetService {
     );
   }
 
-  getRequest(url: string): Observable<ResponseData> {
+  getRequest(url: string, full: boolean = false): Observable<ResponseData> {
     return this.http.get(environment.backendUrl + url).pipe(map((val: ResponseData) => {
       if (!environment.production) {
         console.log(val);
       }
 
       if (val.error.length === 0) {
-        return val.data;
+        return (full) ? val : val.data;
       } else {
         console.log(val.error);
 

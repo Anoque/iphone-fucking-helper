@@ -1,0 +1,8 @@
+<ng-container *ngIf="data != null">
+  <h2>{{ data.article.title }}</h2>
+  {{ data.article.date }}
+
+  <div *ngFor="let relation of data.relations">
+    {{ relation.title }}
+  </div>
+</ng-container>

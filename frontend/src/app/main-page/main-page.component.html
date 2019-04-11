@@ -1,1 +1,9 @@
 <h2>Iphone f*cking helper</h2>
+<ng-container>
+  <mat-card *ngFor="let post of posts">
+    {{ post.relation }} {{ post.article_title }}
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="openArticle(post.relation)">Open article</button>
+    </mat-card-actions>
+  </mat-card>
+</ng-container>

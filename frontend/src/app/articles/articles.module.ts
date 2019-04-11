@@ -5,6 +5,7 @@ import { ArticlesListComponent } from './articles-list/articles-list.component';
 import { RouterModule } from '@angular/router';
 import { ArticlesRoutingModule } from './articles-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { ArticleInfoComponent } from './article-info/article-info.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { SharedModule } from '../shared/shared.module';
   ],
   declarations: [
     ArticleFormComponent,
-    ArticlesListComponent
+    ArticlesListComponent,
+    ArticleInfoComponent
   ],
 })
 export class ArticlesModule { }
