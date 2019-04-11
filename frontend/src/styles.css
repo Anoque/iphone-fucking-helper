@@ -9,4 +9,7 @@
 html, body {
   min-height: 100vh;
   min-width: 100vw;
+  font-family: Kinnari, sans-serif;
+  font-size: 1em;
+  line-height: 1em;
 }
