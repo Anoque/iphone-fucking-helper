@@ -2,9 +2,15 @@
   <mat-toolbar color="primary" id="header-menu">
     <nav>
       <ul>
-        <li><a routerLink="/articles" mat-raised-button>Articles list</a></li>
-        <li><a routerLink="/articles/add" mat-raised-button>Add article</a></li>
-        <li><a routerLink="/auth" mat-raised-button>Auth</a></li>
+        <li *ngFor="let item of menu">
+          <a [routerLink]="item.url"
+            *ngIf="(!item.admin && !item.unAuth)
+            || (netService.getToken().length > 0 && item.admin)
+            || (netService.getToken().length == 0 && item.unAuth)"
+            mat-raised-button>
+            {{ item.name }}
+          </a>
+        </li>
       </ul>
     </nav>
   </mat-toolbar>
