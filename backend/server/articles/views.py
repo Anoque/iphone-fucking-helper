@@ -2,7 +2,7 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
-from .models import Article
+from .models import Article, ArticleRelation
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
@@ -51,3 +51,40 @@ def delete(request, format=None):
             return HttpResponse('{"error": "No id"}')
     else:
         return HttpResponse('{"error": "No method"}')
+
+def get_relations(id):
+    data = ArticleRelation.objects.filter(parent=id)
+    if (len(data) > 0):
+        answer = []
+        for a in data:
+            article = Article.objects.get(id=a.relation)
+            answer.append(article.to_object())
+        return answer
+    else:
+        return []
+
+def get_article(request, id):
+    data = {}
+    data['article'] = Article.objects.get(id = id).to_object()
+    data['relations'] = get_relations(id)
+    return HttpResponse(json.dumps({"data": data, "error": ""}), content_type = 'json')
+
+def get_posts_by_id(request, id):
+    if request.method == 'GET':
+        data = ArticleRelation.objects.filter(parent=id)
+        if (len(data) > 0):
+            answer = []
+            for a in data:
+                article = Article.objects.get(id=a.relation)
+                answer.append({
+                    "parent": a.parent,
+                    "relation": a.relation,
+                    "article_title": article.title
+                })
+                #print(a.parent, a.relation)
+
+            return HttpResponse(json.dumps({"data": answer, "error": ""}), content_type = 'json')
+        else:
+            return HttpResponse('[]')
+    else:
+        return HttpResponse('{"error":"Must be GET"}')
