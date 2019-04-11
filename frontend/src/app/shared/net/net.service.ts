@@ -20,23 +20,7 @@ export class NetService {
   }
 
   sendRequest(url: string, data: any, full: boolean = false): Observable<any> {
-    let options;
-    if (this.getToken().length > 0) {
-      options = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Authorization': 'Token ' + this.getToken()
-        })
-      };
-    } else {
-      options = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
-    }
-
-    return this.http.post(environment.backendUrl + url, JSON.stringify(data), options).pipe(
+    return this.http.post(environment.backendUrl + url, JSON.stringify(data), this.getHeaders()).pipe(
       map((val: any) => {
         if (!environment.production) {
           console.log(val);
@@ -51,8 +35,25 @@ export class NetService {
     );
   }
 
+  getHeaders() {
+    if (this.getToken().length > 0) {
+      return {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + this.getToken()
+        })
+      };
+    } else {
+      return {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+    }
+  }
+
   getRequest(url: string, full: boolean = false): Observable<ResponseData> {
-    return this.http.get(environment.backendUrl + url).pipe(map((val: ResponseData) => {
+    return this.http.get(environment.backendUrl + url, this.getHeaders()).pipe(map((val: ResponseData) => {
       if (!environment.production) {
         console.log(val);
       }
