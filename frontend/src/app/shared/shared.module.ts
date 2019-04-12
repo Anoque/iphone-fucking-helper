@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NetService } from './net/net.service';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { MaterialModule } from './material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorStateMatcher, MAT_DATE_LOCALE, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDirtyErrorStateMatcher } from '@angular/material';
 
@@ -11,6 +11,7 @@ import { ErrorStateMatcher, MAT_DATE_LOCALE, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDir
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
   ],
@@ -20,6 +21,7 @@ import { ErrorStateMatcher, MAT_DATE_LOCALE, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDir
   exports: [
     ErrorMessageComponent,
     ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule,
     MaterialModule,
   ],

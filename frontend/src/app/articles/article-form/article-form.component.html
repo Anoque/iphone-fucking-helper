@@ -27,4 +27,18 @@
       </form>
     </mat-card-content>
   </mat-card>
+
+  <mat-card id="article-form-relations">
+    <mat-card-title>
+      <h2>Relations</h2>
+    </mat-card-title>
+    <mat-card-content id="relations-overflow">
+      <input matInput type="text" [(ngModel)]="search" placeholder="Search" (ngModelChange)="searching()">
+      <mat-list>
+        <mat-list-item *ngFor="let item of filtered">
+          {{ item.title }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 </article>

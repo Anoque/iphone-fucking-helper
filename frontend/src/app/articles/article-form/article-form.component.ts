@@ -1,8 +1,8 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {DataService} from '../../shared/data.service';
-import {NetService} from '../../shared/net/net.service';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DataService } from '../../shared/data.service';
+import { NetService } from '../../shared/net/net.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-article-form',
@@ -23,11 +23,16 @@ export class ArticleFormComponent implements OnInit {
   colors: string[];
   color: number;
   error: string;
+  articles: any[];
+  filtered: any[];
+  search: string;
 
   constructor(private fb: FormBuilder, private netService: NetService) {
     this.colors = ['#656565', '#ff0000', '#00ff00'];
     this.color = 0;
     this.error = '';
+    this.articles = [];
+    this.search = '';
   }
 
   ngOnInit() {
@@ -46,10 +51,19 @@ export class ArticleFormComponent implements OnInit {
       date: ['', []],
       description: ['', []]
     });
+
+    this.loadRelations();
+  }
+
+  loadRelations() {
+    this.netService.getRequest('articles/all', true).subscribe((res) => {
+      this.articles = res.data;
+      this.articles.forEach(value => value.title = `${value.id}. value.title`);
+      this.searching();
+    });
   }
 
   onSubmit() {
-    console.log(this.formItems.invalid);
     if (!this.formItems.invalid) {
       const data = {
         'title': this.formItems.controls['title'].value,
@@ -73,6 +87,12 @@ export class ArticleFormComponent implements OnInit {
     } else {
       this.color = 1;
     }
+  }
+
+  searching(): void {
+      this.filtered = (this.search.length === 0)
+        ? this.articles
+        : this.articles.filter(value => value.title.toUpperCase().indexOf(this.search.toUpperCase()) !== -1);
   }
 
 }
