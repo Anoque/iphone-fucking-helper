@@ -1,18 +1,18 @@
 <article id="header-menu-container">
   <mat-toolbar color="primary" id="header-menu">
-    <nav>
+    <mat-toolbar-row>
       <ul>
-        <li *ngFor="let item of menu">
-          <a [routerLink]="item.url"
-            *ngIf="(!item.admin && !item.unAuth)
-            || (netService.getToken().length > 0 && item.admin)
-            || (netService.getToken().length == 0 && item.unAuth)"
-            mat-raised-button>
-            {{ item.name }}
-          </a>
-        </li>
+        <ng-container *ngFor="let item of menu">
+          <li *ngIf="(!item.admin && !item.unAuth)
+          || (netService.getToken().length > 0 && item.admin)
+          || (netService.getToken().length == 0 && item.unAuth)">
+            <a [routerLink]="item.url" mat-raised-button>
+              {{ item.name }}
+            </a>
+          </li>
+        </ng-container>
       </ul>
-    </nav>
+    </mat-toolbar-row>
   </mat-toolbar>
 </article>
 <div id="content">

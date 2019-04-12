@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {DataService} from './shared/data.service';
-import {NetService} from './shared/net/net.service';
+import { NetService } from './shared/net/net.service';
 
 export class MenuItem {
   name: string;
@@ -26,6 +25,7 @@ export class AppComponent implements OnInit {
 
   constructor(public netService: NetService) {
     this.menu = [
+      new MenuItem('Main page', '/'),
       new MenuItem('Articles list', '/articles', true),
       new MenuItem('Article add', '/articles/add', true),
       new MenuItem('Sign on', '/auth', false, true),
