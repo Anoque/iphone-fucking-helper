@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NetService } from '../shared/net/net.service';
-import {ActivatedRoute, Route, Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -21,7 +21,9 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    // this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#656565';
+    if (this.netService.getToken().length > 0) {
+      this.router.navigate(['/articles']);
+    }
   }
 
   initForm(): void {
@@ -42,7 +44,6 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.formItems.controls);
     if (!this.formItems.invalid) {
       this.showErrors = true;
       const data = {
@@ -53,10 +54,10 @@ export class LoginFormComponent implements OnInit {
       this.netService.sendRequest('api-token-auth/', data).subscribe(
         res => {
             if (res['token']) {
-              console.log(res.token);
               this.netService.setToken(res.token);
               this.showInvalidMessage = false;
-              setTimeout(() => this.router.navigate(['/articles']), 1000);
+              this.formItems.reset();
+              this.router.navigate(['/articles']);
             }
           },
         err => {
