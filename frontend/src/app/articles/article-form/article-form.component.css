@@ -29,7 +29,29 @@
   margin-left: 20px;
 }
 
+#article-form-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
 #relations-overflow {
   max-height: 50vh;
   overflow-y: auto;
+}
+
+#relations-overflow span {
+  display: inline-block;
+  cursor: pointer;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.parent-item {
+  color: green;
+}
+
+.child-item {
+  color: blue;
 }
