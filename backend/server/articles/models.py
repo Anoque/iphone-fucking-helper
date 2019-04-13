@@ -6,12 +6,14 @@ from django.db import models
 class Article(models.Model):
     title = models.CharField(max_length=255)
     date = models.DateTimeField('date published')
+    description = models.TextField()
 
     def to_object(self):
         return {
             "id": self.id,
             "title": self.title,
-            "date": self.date.strftime("%Y-%m-%d %H:%M:%S")
+            "date": self.date.strftime("%Y-%m-%d %H:%M:%S"),
+            "description": self.description
         }
 
 
