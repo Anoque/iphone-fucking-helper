@@ -6,6 +6,7 @@ import { MaterialModule } from './material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorStateMatcher, MAT_DATE_LOCALE, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDirtyErrorStateMatcher } from '@angular/material';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { ErrorStateMatcher, MAT_DATE_LOCALE, MAT_LABEL_GLOBAL_OPTIONS, ShowOnDir
   ],
   providers: [
     NetService,
+    CookieService,
     {provide: MAT_LABEL_GLOBAL_OPTIONS, useValue: {float: 'always'}},
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher},
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
