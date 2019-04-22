@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from '../../shared/data.service';
 import { NetService } from '../../shared/net/net.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-article-form',
@@ -28,7 +29,7 @@ export class ArticleFormComponent implements OnInit {
   filtered: any[];
   search: string;
 
-  constructor(private fb: FormBuilder, private netService: NetService) {
+  constructor(private fb: FormBuilder, private netService: NetService, private route: ActivatedRoute) {
     this.colors = ['#656565', '#FF7373', '#00ff00'];
     this.color = 0;
     this.error = '';
@@ -38,11 +39,36 @@ export class ArticleFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    if (typeof this.id !== 'undefined') {
-      this.netService.getRequest(`articles/get/${ this.id }`, true).subscribe((res) => {
-        const data = res.data;
-      });
-    }
+    this.route.params.subscribe((value) => {
+      try {
+        this.id = +value.id;
+        if (typeof this.id !== 'undefined' && !isNaN(this.id)) {
+          this.netService.getRequest(`articles/get/${ this.id }`, true).subscribe((res) => {
+            const list = this.articles.map(_ => _.id);
+            const parents = res.data.parents.map(_ => _.id);
+            const children = res.data.children.map(_ => _.id);
+            this.formItems.controls['title'].setValue(res.data.article.title);
+            this.formItems.controls['description'].setValue(res.data.article.description);
+            this.formItems.controls['id'].setValue(res.data.article.id);
+
+            if (res.data.parents.length > 0 || res.data.children.length > 0) {
+              this.formItems.controls['parent'].setValue(true);
+            }
+
+            for (let i = 0; i < list.length; i++) {
+              if (parents.length > 0 && parents.indexOf(list[i]) !== -1) {
+                this.articles[i].isParent = true;
+              }
+              if (children.length > 0 && children.indexOf(list[i]) !== -1) {
+                this.articles[i].isChild = true;
+              }
+            }
+          });
+        }
+      } catch (e) {
+        this.error = e;
+      }
+    });
   }
 
   initForm(): void {
@@ -56,27 +82,33 @@ export class ArticleFormComponent implements OnInit {
       ],
       date: ['', []],
       description: ['', []],
-      parent: ['']
+      parent: [''],
+      id: [''],
     });
-
-    this.loadRelations();
   }
 
   loadRelations() {
-    this.netService.getRequest('articles/all', true).subscribe((res) => {
-      this.articles = res.data;
-      this.articles.forEach(value => {
-        value.title = `${value.id}. ${value.title}`;
-        value.isParent = false;
-        value.isChild = false;
+    if (this.articles.length === 0 && this.formItems.controls['parent'].value) {
+      this.netService.getRequest('articles/all', true).subscribe((res) => {
+        if (res) {
+          this.articles = res.data;
+          this.articles.forEach(value => {
+            value.title = `${value.id}. ${value.title}`;
+            value.isParent = false;
+            value.isChild = false;
+          });
+          this.searching();
+        }
+      }, err => {
+        console.log(err);
       });
-      this.searching();
-    });
+    }
   }
 
   onSubmit() {
     if (!this.formItems.invalid) {
       const data = {
+        'id': this.formItems.controls['id'].value,
         'title': this.formItems.controls['title'].value,
         'date': DataService.getDateString(new Date, true),
         'description': this.formItems.controls['description'].value,

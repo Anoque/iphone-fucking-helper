@@ -1,5 +1,5 @@
 <article id="article-form" @simpleFadeAnimation [style.background]="colors[color]">
-  <mat-card>
+  <mat-card id="article-form-block">
     <mat-card-content>
       <form [formGroup]="formItems" (ngSubmit)="onSubmit()">
         <h2>Add new article</h2>
@@ -22,7 +22,7 @@
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>-->
-        <mat-checkbox [formControlName]="'parent'">Relations list</mat-checkbox>
+        <mat-checkbox [formControlName]="'parent'" (ngModelChange)="loadRelations()">Relations list</mat-checkbox>
         <br>
         <app-error-message [error]="error" *ngIf="error.length > 0"></app-error-message>
         <div id="article-form-buttons">
@@ -34,11 +34,15 @@
   </mat-card>
 
   <mat-card id="article-form-relations" *ngIf="showParent()">
-    <mat-card-title>
-      <h2>Parent articles</h2>
-    </mat-card-title>
+    <mat-card-header>
+      <mat-form-field>
+        <input matInput type="text" [(ngModel)]="search" placeholder="Search" (ngModelChange)="searching()">
+        <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search='';searching()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </mat-card-header>
     <mat-card-content id="relations-overflow">
-      <input matInput type="text" [(ngModel)]="search" placeholder="Search" (ngModelChange)="searching()">
       <div id="lists">
         <mat-list>
           <mat-list-item *ngFor="let item of filtered; let i = index;">
@@ -47,5 +51,11 @@
         </mat-list>
       </div>
     </mat-card-content>
+    <mat-card-subtitle>
+      <p>
+        Parent is <span class="parent-item">Green</span>.
+        Child is <span class="child-item">Blue</span>
+      </p>
+    </mat-card-subtitle>
   </mat-card>
 </article>

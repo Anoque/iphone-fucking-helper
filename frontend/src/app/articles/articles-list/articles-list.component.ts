@@ -41,4 +41,8 @@ export class ArticlesListComponent implements OnInit {
       }
     });
   }
+
+  edit(i: number): void {
+    this.router.navigate(['/articles/edit/', this.articles[i].id]);
+  }
 }

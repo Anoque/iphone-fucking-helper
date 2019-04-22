@@ -3,7 +3,7 @@ import {
   MatButtonModule,
   MatCardModule, MatCheckboxModule, MatDatepickerModule,
   MatDividerModule,
-  MatFormFieldModule,
+  MatFormFieldModule, MatIconModule,
   MatInputModule,
   MatListModule, MatNativeDateModule,
   MatToolbarModule
@@ -21,6 +21,7 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatIconModule,
   ],
   exports: [
     MatButtonModule,
@@ -33,6 +34,7 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatIconModule,
   ]
 })
 export class MaterialModule { }

@@ -2,8 +2,8 @@
   width: 100%;
   height: calc(100vh - 64px);
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  /*justify-content: center*/;
   align-items: center;
   background: #656565;
 }
@@ -13,7 +13,11 @@
   flex-wrap: wrap;
   flex-direction: column;
   font-size: 1.4em;
-  min-width: 400px;
+}
+
+#article-form-block {
+  width: 540px;
+  height: auto;
 }
 
 #article-form h2,
@@ -26,7 +30,8 @@
 }
 
 #article-form-relations {
-  margin-left: 20px;
+  width: 540px;
+  margin-top: 20px;
 }
 
 #article-form-buttons {
@@ -36,8 +41,12 @@
 }
 
 #relations-overflow {
-  max-height: 50vh;
+  max-height: 40vh;
   overflow-y: auto;
+}
+
+#article-form-relations mat-card-subtitle {
+  margin: 0;
 }
 
 #relations-overflow span {
