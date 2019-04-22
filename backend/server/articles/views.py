@@ -28,25 +28,51 @@ def add(request, format=None):
         data = json.loads(request.body)
 
         if data['title'] and len(data['title']) > 0 and data['date'] and len(data['date']):
-            article = Article()
+            article = Article() if data['id'] == '' else Article.objects.get(id=data['id'])
             article.title = data["title"]
             article.date = data["date"]
             article.description = data["description"]
             article.save()
+            p = []
+            c = []
+
+            if type(data['id']) == int:
+                p = list(map(to_parent_list, ArticleRelation.objects.filter(parent = data['id'])))
+                c = list(map(to_relation_list, ArticleRelation.objects.filter(relation = data['id'])))
+                if 0 in p:
+                    p.remove(0)
+                if 0 in c:
+                    c.remove(0)
+
+            p_d = p
+            c_d = c
 
             if data['parents'] and len(data['parents']) > 0:
                 for relation in data['parents']:
-                    article_relation = ArticleRelation()
-                    article_relation.parent = article.id
-                    article_relation.relation = relation
-                    article_relation.save()
+                    if relation not in p:
+                        article_relation = ArticleRelation()
+                        article_relation.parent = article.id
+                        article_relation.relation = relation
+                        article_relation.save()
+                    else:
+                        p_d.remove(relation)
 
             if data['children'] and len(data['children']) > 0:
                 for relation in data['children']:
-                    article_relation = ArticleRelation()
-                    article_relation.parent = relation
-                    article_relation.relation = article.id
-                    article_relation.save()
+                    if relation in c:
+                        article_relation = ArticleRelation()
+                        article_relation.parent = relation
+                        article_relation.relation = article.id
+                        article_relation.save()
+                    else:
+                        c_d.remove(relation)
+
+            for delete in p_d:
+                el = ArticleRelation.objects.get(parent=article.id, relation=delete)
+                el.delete()
+            for delete in c_d:
+                el = ArticleRelation.objects.get(parent=delete, relation=article.id)
+                el.delete()
 
             return HttpResponse(custom_data_module.getResponse({"id":article.id}), content_type = 'json')
         else:
@@ -81,12 +107,14 @@ def delete(request, format=None):
     else:
         return HttpResponse('{"error": "No method"}')
 
-def get_relations(id):
-    data = ArticleRelation.objects.filter(parent = id)
+def get_relations(id, isParent = True):
+    data = ArticleRelation.objects.filter(parent=id) if isParent else ArticleRelation.objects.filter(relation=id)
     if (len(data) > 0):
         answer = []
         for a in data:
-            article = Article.objects.get(id = a.relation)
+            if a.relation == 0 or a.parent == 0:
+                continue
+            article = Article.objects.get(id = a.relation if isParent else a.parent)
             answer.append(article.to_object())
         return answer
     else:
@@ -95,7 +123,12 @@ def get_relations(id):
 def get_article(request, id):
     data = {}
     if (int(id) > 0):
-        data['article'] = Article.objects.get(id = id).to_object()
+        try:
+            data['article'] = Article.objects.get(id = id).to_object()
+            data['parents'] = get_relations(id)
+            data['children'] = get_relations(id, False)
+        except Exception:
+            return HttpResponse(custom_data_module.getError('Not found'), content_type = 'json')
     else:
         data['article'] = {
             "id": 0,
@@ -103,9 +136,7 @@ def get_article(request, id):
             "description": "",
             "date": "1970-01-01 00:00:00"
         }
-    
-    data['relations'] = get_relations(id)
-    return HttpResponse(json.dumps({"data": data, "error": ""}), content_type = 'json')
+    return HttpResponse(custom_data_module.getResponse(data), content_type = 'json')
 
 def get_posts_by_id(request, id):
     if request.method == 'GET':
@@ -138,3 +169,12 @@ def all(request):
         return HttpResponse(custom_data_module.getResponse(data), content_type = 'json')
     else:
         return HttpResponse(custom_data_module.getError("WTF?"))
+
+def to_id_list(item, isParent = True):
+    return item.relation if isParent else item.parent
+
+def to_parent_list(item):
+    return to_id_list(item, True)
+
+def to_relation_list(item):
+    return to_id_list(item, False)
