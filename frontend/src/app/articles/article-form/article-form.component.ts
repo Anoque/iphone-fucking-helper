@@ -28,6 +28,7 @@ export class ArticleFormComponent implements OnInit {
   articles: any[];
   filtered: any[];
   search: string;
+  relationsData: object;
 
   constructor(private fb: FormBuilder, private netService: NetService, private route: ActivatedRoute) {
     this.colors = ['#656565', '#FF7373', '#00ff00'];
@@ -35,6 +36,10 @@ export class ArticleFormComponent implements OnInit {
     this.error = '';
     this.articles = [];
     this.search = '';
+    this.relationsData = {
+      parents: [],
+      children: []
+    };
   }
 
   ngOnInit() {
@@ -44,9 +49,8 @@ export class ArticleFormComponent implements OnInit {
         this.id = +value.id;
         if (typeof this.id !== 'undefined' && !isNaN(this.id)) {
           this.netService.getRequest(`articles/get/${ this.id }`, true).subscribe((res) => {
-            const list = this.articles.map(_ => _.id);
-            const parents = res.data.parents.map(_ => _.id);
-            const children = res.data.children.map(_ => _.id);
+            this.relationsData['parents'] = res.data.parents.map(_ => _.id);
+            this.relationsData['children'] = res.data.children.map(_ => _.id);
             this.formItems.controls['title'].setValue(res.data.article.title);
             this.formItems.controls['description'].setValue(res.data.article.description);
             this.formItems.controls['id'].setValue(res.data.article.id);
@@ -55,20 +59,24 @@ export class ArticleFormComponent implements OnInit {
               this.formItems.controls['parent'].setValue(true);
             }
 
-            for (let i = 0; i < list.length; i++) {
-              if (parents.length > 0 && parents.indexOf(list[i]) !== -1) {
-                this.articles[i].isParent = true;
-              }
-              if (children.length > 0 && children.indexOf(list[i]) !== -1) {
-                this.articles[i].isChild = true;
-              }
-            }
+            this.loadRelations();
           });
         }
       } catch (e) {
         this.error = e;
       }
     });
+  }
+
+  createRelationsStatus() {
+    for (let i = 0; i < this.articles.length; i++) {
+      if (this.relationsData['parents'].length > 0 && this.relationsData['parents'].indexOf(this.articles[i].id) !== -1) {
+        this.articles[i].isParent = true;
+      }
+      if (this.relationsData['children'].length > 0 && this.relationsData['children'].indexOf(this.articles[i].id) !== -1) {
+        this.articles[i].isChild = true;
+      }
+    }
   }
 
   initForm(): void {
@@ -98,6 +106,10 @@ export class ArticleFormComponent implements OnInit {
             value.isChild = false;
           });
           this.searching();
+
+          if (this.relationsData['parents'].length > 0 || this.relationsData['children'].length > 0) {
+            this.createRelationsStatus();
+          }
         }
       }, err => {
         console.log(err);
@@ -118,9 +130,11 @@ export class ArticleFormComponent implements OnInit {
 
       this.netService.sendRequest('articles/add/', data).subscribe((res) => {
         if (typeof res.id === 'number') {
-          data['id'] = res.id;
-          data['title'] = `${res.id}. ${data['title']}`;
-          this.articles.unshift(data);
+          if (typeof data['id'] !== 'number') {
+            data['id'] = res.id;
+            data['title'] = `${res.id}. ${data['title']}`;
+            this.articles.unshift(data);
+          }
           this.articles.forEach(value => {
             value.isParent = false;
             value.isChild = false;
