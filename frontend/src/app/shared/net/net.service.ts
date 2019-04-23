@@ -53,8 +53,7 @@ export class NetService {
   getRequest(url: string, full: boolean = false): Observable<ResponseData> {
     return this.http.get(environment.backendUrl + url, this.getHeaders()).pipe(map((val: ResponseData) => {
       if (!environment.production) {
-        console.log(environment.backendUrl + url);
-        console.log(val);
+        console.log(environment.backendUrl + url, val);
       }
 
       if (val.error.length === 0) {
