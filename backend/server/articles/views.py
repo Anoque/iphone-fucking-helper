@@ -47,6 +47,7 @@ def add(request, format=None):
             p_d = p
             c_d = c
 
+            # Add relations
             if data['parents'] and len(data['parents']) > 0:
                 for relation in data['parents']:
                     if relation not in p:
@@ -59,7 +60,7 @@ def add(request, format=None):
 
             if data['children'] and len(data['children']) > 0:
                 for relation in data['children']:
-                    if relation in c:
+                    if relation not in c:
                         article_relation = ArticleRelation()
                         article_relation.parent = relation
                         article_relation.relation = article.id
@@ -67,6 +68,7 @@ def add(request, format=None):
                     else:
                         c_d.remove(relation)
 
+            # Remove relations
             for delete in p_d:
                 el = ArticleRelation.objects.get(parent=article.id, relation=delete)
                 el.delete()
@@ -121,7 +123,11 @@ def get_relations(id, isParent = True):
         return []
 
 def get_article(request, id):
-    data = {}
+    data = {
+        'article': {},
+        'parents': [],
+        'children': []
+    }
     if (int(id) > 0):
         try:
             data['article'] = Article.objects.get(id = id).to_object()
@@ -140,7 +146,6 @@ def get_article(request, id):
 
 def get_posts_by_id(request, id):
     if request.method == 'GET':
-        print(id)
         data = ArticleRelation.objects.filter(parent = id)
         if len(data) > 0:
             answer = []
