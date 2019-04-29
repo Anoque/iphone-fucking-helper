@@ -1,18 +1,13 @@
-<article id="article-info" *ngIf="data != null">
+<article class="article-info" *ngIf="data != null">
   <h2>{{ (data.article.id != 0) ? data.article.title : 'Категории' }}</h2>
-  <!--{{ (data.article.id != 0) ? data.article.date : '' }}-->
   <br>
   <p *ngIf="data.article.description != '0'">
     {{ data.article.description }}
   </p>
-  <div class="article-info-card">
-    <ng-container *ngFor="let relation of data.relations; let i = index;">
-      <div class="accordion-item">
-        <button mat-raised-button (click)="opened[i] = !opened[i]">{{ data.relations[i].title }}</button>
-        <section *ngIf="opened[i]">
-          <app-article-info [id]="data.relations[i].id"></app-article-info>
-        </section>
-      </div>
-    </ng-container>
-  </div>
 </article>
+
+<ng-container *ngFor="let relation of data.children; let i = index;">
+  <div class="accordion-item">
+    <button mat-raised-button (click)="toArticleInfoPage(i)">{{ relation.title }}</button>
+  </div>
+</ng-container>
